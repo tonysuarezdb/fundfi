@@ -230,8 +230,24 @@ The majority of engineering effort still exists in:
 
 | Estimate Type | Hours     |
 | ------------- | --------- |
-| Low estimate  | 822 hrs   |
-| High estimate | 1,173 hrs |
+| Low estimate  | 828 hrs   |
+| High estimate | 1,174 hrs |
+
+### Hours by Role
+
+| Role                     | Hours (Low) | Notes                                                              |
+| ------------------------ | ----------- | ------------------------------------------------------------------ |
+| PM                       | 56 hrs      | Coordination, client comms, UAT facilitation, compliance docs      |
+| UX / UI Designer         | 64 hrs      | Full-time Phase 1 — 11 screens with all states (error, empty, etc) |
+| Frontend Developer (× 2) | 174 hrs     | React / Next.js 14+. Payment UI, file upload, renewal flow         |
+| Backend Developer (× 2)  | 296 hrs     | Critical path — payments, LendSaaS, S3, auth, security             |
+| QA Engineer              | 184 hrs     | Part-time Phase 2, full-time Phase 3 (regression + security tests) |
+| DevOps Engineer          | 54 hrs      | CI/CD, WAF, S3, secrets vault, production deployment               |
+| **Total**                | **828 hrs** |                                                                    |
+
+> **These estimates trend upward, not downward.**
+> Risk on this type of project is one-directional — scope gaps, integration unknowns, and compliance requirements tend to add hours, not reduce them.
+> The high estimate accounts for known risks (LendSaaS API coverage, payment processor complexity, PCI scope). If those risks materialize fully, actual effort could exceed the high estimate.
 
 ## Important Staffing Note
 
