@@ -1,0 +1,99 @@
+Epic Name / Link,Epic Description,Scope Category,Risk,Design,PM,FE,BE,QA,Infra,Low Estimate,High Estimate
+,,,,,,,,,,,,
+--- Fase 0 — Discovery  |  Validar LendSaaS API + payment processor + estrategia de auth ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+LendSaaS API Evaluation & Integration Spike,"Validar qué datos expone LendSaaS vía API: customers, deals, payments, schedules, balances. Definir enfoque de integración. Identificar gaps. Confirmar disponibilidad de sandbox. Decisión de auth (JWT, invite flow, lockout policy).",fase0,Low,0,16,0,24,0,0,40,52
+Payment Processor Evaluation,"Identificar qué processor usa Fundfi (ACH vs. card vs. ambos). Evaluar si soporta hosted/tokenized flow para reducir alcance PCI. Confirmar quién tiene la obligación PCI DSS (Fundfi o Dualboot). Documentar webhook/callback disponibles. Decisión bloqueante antes de estimar Fase 2 de pagos.",fase0,Low,0,4,0,8,0,0,12,16
+,,,,,,,,,,,,
+Fase 0 TOTAL,,,,0,20,0,32,0,0,52,68
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 1 — UX + Architecture  |  Wireframes, diseño visual, arquitectura técnica y modelo de seguridad ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+UX Design — Wireframes & Prototipo Interactivo,"Cobertura de 10 pantallas: Login, Forgot Password, Dashboard, Deal Detail, Payment History, Payment Schedule, Make Payment, Renewal, Profile, Support. Prototipo interactivo para revisión con cliente. Incluye desktop + mobile. Estados: vacío, error, cargando.",fase1,Med,40,8,0,0,0,0,48,72
+Visual Design & Component Library,"Branding Fundfi aplicado a todas las pantallas. Librería de componentes: botones, cards, tablas, modales, barra de progreso RTR, status badges (paid/pending/bounced). Entregable en Figma. Cubre breakpoints desktop + mobile.",fase1,Low,24,0,0,0,0,0,24,31
+Technical Architecture + Security Design,"Stack: Next.js + NestJS + PostgreSQL. Modelo de datos: PortalUser, Merchant, Deal, Payment, PaymentSchedule, RenewalRequest, AuditLog. Threat model básico: IDOR, XSS, CSRF, session hijacking. Decisión de identity provider vs. auth propia. Contrato de API con LendSaaS.",fase1,Low,0,0,4,16,0,0,20,26
+,,,,,,,,,,,,
+Fase 1 ADDITIONS,,,,64,8,4,16,0,0,92,129
+Fase 1 CUMULATIVE TOTAL,,,,64,28,4,48,0,0,144,197
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 2 — Build MVP  |  Portal completo con pagos reales, file storage real y security hardening ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+Tech Stack Setup & Dev Environment,"Monorepo: /apps/web (Next.js) + /apps/api (NestJS). PostgreSQL + Prisma. TypeScript strict. ESLint + Prettier. Scripts locales. Variables de entorno. Mock data layer para desarrollo independiente de LendSaaS sandbox.",fase2,Low,0,0,8,8,0,0,16,21
+Infrastructure & DevOps,"Ambientes cloud: dev + staging + prod. CI/CD (GitHub Actions). Docker. Managed DB con backups automáticos. SSL. WAF básico. Secrets manager (Railway / Doppler / AWS Secrets). Sentry + uptime monitoring. Separación de environments requerida por FFIEC.",fase2,Med,0,0,0,0,0,20,20,30
+Authentication System,"Login con email + password (bcrypt). Logout. Forgot password con tokens de expiración. Rate limiting (5 intentos antes de lockout). Account lockout con cooldown. Session timeout. JWT con httpOnly cookies + refresh tokens. NIST SP 800-63B compliant.",fase2,Med,0,0,20,24,8,0,52,78
+Merchant Invite & Onboarding Flow,"Flujo de primer acceso: admin Fundfi genera invite link por merchant. Link con token de expiración (24-48 hrs). Merchant acepta invite, crea password, queda ligado a su merchantId en LendSaaS. Fallback: re-invite si el link expiró.",fase2,Med,0,0,8,8,4,0,20,30
+Multi-User per Merchant,"Soporte para que múltiples contactos autorizados accedan al mismo merchant account. PortalUser → merchantId mapping (many-to-one). Admin Fundfi puede agregar/remover usuarios por merchant. IDOR enforcement: usuario solo puede ver su merchant, sin importar el deal ID en la URL.",fase2,Med,0,0,8,12,5,0,25,37
+Merchant Dashboard,"Landing post-login: company name, deal ID, total RTR, balance RTR, barra de progreso (percent paid), frecuencia, monto, próxima fecha, fecha final esperada. Renewal CTA (activado al 40%). Botón Make Payment. Manejo de múltiples deals.",fase2,Med,0,0,20,12,6,0,38,57
+Data Modules — Progress / Payment History / Schedule / Profile,"(1) Progress bar con gate de 40%. (2) Payment History: fecha, monto, status, método, reference ID, motivo de rechazo — rojo para bounced/failed. (3) Payment Schedule: frecuencia, monto, próximas 5 fechas, fecha final. (4) Profile: company name, dirección, authorized contacts — read-only en MVP.",fase2,Low,0,0,38,24,16,0,78,101
+Renewal Request Flow,"Solo disponible al 40%+. Flujo: monto deseado → upload de 3 bank statements (a S3 encriptado) → review → submit. Al enviar: email a Fundfi submissions con company name en subject + secure links a los documentos (no adjuntos). Registro de auditoría de cada submission. Estado 'Renewal Submitted' en portal.",fase2,Med,0,0,20,16,8,0,44,66
+Support / Contact Page,"Página estática: email de soporte, teléfono, FAQ básica (6 preguntas: balance RTR, pagos rechazados, renewal, actualizar contacto, soporte de portal).",fase2,Low,0,0,6,0,0,0,6,8
+LendSaaS Integration Layer,"Servicio NestJS centralizando todas las llamadas a LendSaaS: GET customer, GET deal(s), GET payments, GET schedule, GET balances. Auth token management. Retry logic (3 intentos con backoff). Fallback a mock data si LendSaaS no responde. Patrón adapter: swap de mock a real sin cambios en lógica de negocio.",fase2,Med,0,0,0,24,8,0,32,48
+Real Payment Gateway Integration,"Integración real con el payment processor de Fundfi (ACH o card — TBD en Fase 0). Hosted/tokenized flow para reducir alcance PCI (portal no almacena datos de pago). Endpoints: initiate payment, status polling/webhook, receipt generation. Reconciliación con LendSaaS post-pago. Manejo de estados: success, pending, failed.",fase2,Med,0,0,20,36,14,0,70,105
+Document Storage — Bank Statements,"Storage privado y encriptado (AWS S3 o equivalente) para bank statements de renewal. Validación de tipo de archivo (PDF/JPG/PNG) y tamaño máximo. Malware scan antes de aceptar. Generación de expiring links (24-48 hrs) para acceso interno de Fundfi. Lifecycle retention rules. Nunca exponer URLs directas al cliente.",fase2,Med,0,0,0,20,4,6,30,45
+Email Routing — Renewal Submissions,"Al completar una renewal request: enviar email automático a inbox de Fundfi con company name en subject line + links seguros a los 3 documentos subidos. Logging del envío. Manejo de bounce/failure en el envío.",fase2,Med,0,0,0,8,4,0,12,18
+Audit Logging System,"Log de todos los eventos sensibles: login/logout, intentos fallidos, vistas de deal/profile, intentos de pago, cambios de estado de renewal, uploads de documentos, acceso a links. Campos: actor, acción, timestamp, IP, target entity. Retención configurable. Queryable por admin Fundfi.",fase2,Med,0,0,4,16,5,0,25,37
+Security Hardening — OWASP / WAF / IDOR,"OWASP ASVS-aligned: input validation, output encoding, CSRF/XSS protections, secure headers (CSP, HSTS, X-Frame). IDOR: nunca confiar en IDs provistos por el cliente — siempre validar contra sesión activa. WAF configurado en capa de infra. Dependency scanning (npm audit). SAST básico en CI pipeline.",fase2,Med,0,0,0,20,10,16,46,69
+Responsive Polish & Accessibility,"Audit pass: iOS Safari + Android Chrome + desktop. Mobile nav. Tablas responsivas. Touch targets ≥ 44px. Contraste WCAG AA. Forms accesibles en mobile para file upload y payment flow.",fase2,Low,0,0,16,0,8,0,24,31
+,,,,,,,,,,,,
+Fase 2 ADDITIONS,,,,0,0,168,228,100,42,538,781
+Fase 2 CUMULATIVE TOTAL,,,,64,28,172,276,100,42,682,978
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 3 — QA / UAT + Security Testing  |  Regresión completa + compliance verification + aceptación ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+Full QA Regression & Bug Fixes,"Regresión end-to-end: login, invite flow, multi-user, dashboard, payment history, schedule, make payment (success/pending/failed), renewal (upload + email), profile, support. Edge cases: sesión expirada, LendSaaS timeout, pago rechazado, merchant < 40%, IDOR intento. Bug fix buffer.",fase3,Med,0,0,8,8,28,0,44,66
+Security Testing & Compliance Verification,"Tests de seguridad: IDOR (deal IDs de otro merchant), XSS básico, CSRF, session timeout enforcement, account lockout verification, file upload bypass attempts, audit log completeness. PCI scope confirmation. Checklist de aceptación técnica antes de go-live.",fase3,Med,0,0,0,4,16,0,20,30
+UAT con Cliente Fundfi & Acceptance,"Preparar staging con datos realistas (merchant < 40%, merchant > 40%, merchant con pago rechazado). Sesión UAT con equipo Fundfi. Recopilar y priorizar feedback. Atender findings críticos. Sign-off document.",fase3,Low,0,12,0,0,8,0,20,26
+,,,,,,,,,,,,
+Fase 3 ADDITIONS,,,,0,12,8,12,52,0,84,122
+Fase 3 CUMULATIVE TOTAL,,,,64,40,180,288,152,42,766,1100
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 4 — Launch / Handoff  |  Producción + compliance docs + entrega ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+Production Deployment & Go-Live,"Configuración final de producción: variables de entorno reales (LendSaaS prod, payment processor prod, email service). DNS + SSL. WAF activo. Secrets en vault. Light load test. Go-live checklist. Ventana de hotfix de 1 semana.",fase4,Low,0,0,0,4,4,12,20,26
+Compliance Documentation,"PCI SAQ-A o SAQ-D según processor elegido (confirmar alcance con Fundfi legal). Documento de controles de seguridad implementados. Audit log retention policy. Runbook de incidentes de seguridad. Checklist OWASP ASVS cubierto vs. pendiente para v2.",fase4,Low,0,8,0,4,4,0,16,21
+Documentation & Handoff,"Docs técnicos: endpoints de API, setup de ambientes, deployment runbook, guía de uso del audit log. Guía para equipo Fundfi: cómo onboardear merchants, cómo revisar renewal submissions, cómo interpretar audit logs. Backlog post-MVP priorizado.",fase4,Low,0,12,4,4,0,0,20,26
+,,,,,,,,,,,,
+Fase 4 ADDITIONS,,,,0,20,4,12,8,12,56,73
+Fase 4 CUMULATIVE TOTAL,,,,64,60,184,300,160,54,822,1173
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- RESUMEN POR FASE ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+Fase,Descripción,Low adiciones,High adiciones,Low acumulado,High acumulado,Calendario estimado,Cuello de botella
+Fase 0 — Discovery,LendSaaS API + payment processor + auth decisions,52,68,52,68,1-2 semanas,BE (32 hrs)
+Fase 1 — UX + Architecture,Diseño + arquitectura + threat model,92,129,144,197,3 semanas (paralela con F0),Designer (64 hrs)
+Fase 2 — Build MVP,Portal completo con pagos reales + security,538,781,682,978,10-12 semanas,BE (228 hrs) — ruta crítica
+Fase 3 — QA + Security + UAT,Regresión + security testing + acceptance,84,122,766,1100,3 semanas,QA (52 hrs)
+Fase 4 — Launch / Handoff,Producción + compliance docs + entrega,56,73,822,1173,1-2 semanas,PM + Infra
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- EQUIPO RECOMENDADO ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+Rol,Horas totales,Fase más activa,Descripción
+PM,60 hrs,Fase 0 + Fase 3-4,Coordinación + client comms + UAT. ~25-35% dedicación. No full-time.
+UX/UI Designer,64 hrs,Fase 1,"Full-time Fase 1 (3 semanas), consulting puntual en Fase 2 para design QA."
+Frontend Developer (×2),184 hrs,Fase 2-3,2 devs en paralelo. Peak Fase 2. React / Next.js 14+.
+Backend Developer,300 hrs,Fase 0-3,"Ruta crítica. 2 BE aceleran Fase 2. Pagos + LendSaaS + security son BE-heavy. Node.js / NestJS."
+QA Engineer,160 hrs,Fase 3,"Part-time Fase 2 (test plan + smoke). Full-time Fase 3 (regresión + security testing + UAT)."
+DevOps Engineer,54 hrs,Fase 2 + Fase 4,WAF + S3 + secrets + CI/CD + prod deployment. Puede ser shared con BE sénior.
+,,,,,,,,,,,,
+Total personas únicas: 6,,,,,,,,,,,,
+Peak simultáneo: 7 en Fase 2 (2 FE + 2 BE + QA + DevOps + PM),,,,,,,,,,,,
+Duración total: 17-21 semanas (~4-5 meses),,,,,,,,,,,,
+Timeline cliente (agosto): agresivo — requiere arrancar antes de junio y 2 BE en Fase 2,,,,,,,,,,,,
+,,,,,,,,,,,,
+Notas:,,,,,,,,,,,,
+Low Estimate = Design + PM + FE + BE + QA + Infra,,,,,,,,,,,,
+"High Estimate = multiplicador por riesgo: Low ×1.3 | Med ×1.5",,,,,,,,,,,,
+"Pagos REALES incluidos en scope — no simulados. Payment processor TBD (ACH o card)",,,,,,,,,,,,
+"PCI DSS scope depende del processor y del approach (hosted page = SAQ-A, server-side = SAQ-D)",,,,,,,,,,,,
+"Bank statements: upload real a S3 encriptado con malware scan — no simulado",,,,,,,,,,,,
+"Si LendSaaS API tiene gaps: +40-80 hrs BE adicionales no incluidos",,,,,,,,,,,,
+"Si payment processor no soporta hosted flow: +30-40 hrs de PCI compliance adicionales",,,,,,,,,,,,
+"160 hrs/mes por desarrollador (40 hrs/sem × 4 sem)",,,,,,,,,,,,
+"Fases 0 + 1 corren en paralelo: calendar time ~3 semanas, no 5",,,,,,,,,,,,
+"Agosto = ~12 semanas desde hoy (mayo). Para cumplir: arrancar Fase 0 esta semana, 2 BE en Fase 2, sin scope creep",,,,,,,,,,,,

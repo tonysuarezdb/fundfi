@@ -1,0 +1,125 @@
+Epic Name / Link,Epic Description,Scope Category,Risk,Design,PM,FE,BE,QA,Infra,Low Estimate,High Estimate
+,,,,,,,,,,,,
+--- Fase 0 — Discovery  |  Validar LendSaaS API + payment processor real + estrategia de auth ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+0.1 LendSaaS API Evaluation,"Explorar todos los endpoints de LendSaaS: customers, deals, payments, schedules, balances. Documentar campos, formatos, paginación y limitaciones. Verificar sandbox/staging. Definir qué datos deben ser mockeados si el sandbox no está disponible. Documentar webhook capabilities (deal updates, payment status).",fase0,Low,0,8,0,16,0,0,24,31
+0.2 Auth Approach Decision,"Evaluar opciones de autenticación: JWT con httpOnly cookies vs. session-based. Definir flujo de invite para onboarding de merchants (link de primer acceso con token de expiración). Confirmar política de lockout, session timeout y rate limiting. Entregable: documento de decisión alineado con NIST SP 800-63B.",fase0,Low,0,4,0,4,0,0,8,10
+0.3 Payment Processor Evaluation & PCI Scope,"Identificar qué processor usa Fundfi (ACH vs. card vs. ambos). Evaluar si soporta hosted/tokenized flow para reducir alcance PCI. Confirmar quién tiene la obligación PCI DSS (Fundfi o Dualboot). Determinar tipo de SAQ: SAQ-A (hosted page) vs. SAQ-A-EP (embedded tokenized) vs. SAQ-D (server-side). Documentar webhook/callback disponibles del processor. Esta decisión es bloqueante para el alcance de Fase 2 de pagos.",fase0,Med,0,4,0,12,0,0,16,24
+,,,,,,,,,,,,
+Fase 0 TOTAL,,,,0,16,0,32,0,0,48,65
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 1 — UX + Architecture  |  Wireframes, diseño visual, arquitectura técnica y threat model ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+1.1 UX — User Flow Mapping & Wireframes Baja Fidelidad,"Mapear flujos de usuario para las 11 pantallas: Login, Forgot Password, Invite Accept, Dashboard, Deal Detail, Payment History, Payment Schedule, Make Payment, Renewal, Profile, Support. Wireframes en baja fidelidad con anotaciones de comportamiento y estados (vacío, error, cargando, bloqueado).",fase1,Med,16,4,0,0,0,0,20,30
+1.2 UX — Wireframes Alta Fidelidad & Prototipo Interactivo,"Elevar wireframes a alta fidelidad. Prototipo interactivo en Figma cubriendo los golden paths: login → dashboard → make payment y login → dashboard → renewal request. Revisión con cliente antes de visual design. Desktop + mobile.",fase1,Med,16,4,0,0,0,0,20,30
+1.3 Visual Design — Branding & Design System,"Aplicar branding Fundfi a todos los componentes. Design system: botones, inputs, cards, tablas, modales, barra de progreso RTR, status badges (paid/pending/bounced/failed), navegación. Variables CSS para consistencia. Entregable: Figma con librería de componentes.",fase1,Low,16,0,0,0,0,0,16,21
+1.4 Visual Design — Screen Comps Finales,"Comps finales para las 11 pantallas en desktop y mobile. Incluye estados: empty state, error state, loading skeleton, blocked state (renewal <40%). Anotaciones para desarrollo: tipografías, espaciados, colores exactos.",fase1,Low,8,0,0,0,0,0,8,10
+1.5 Technical Architecture + Security Design & Threat Model,"Decisión de stack: Next.js 14+ + NestJS + PostgreSQL. Modelo de datos: PortalUser, MerchantMapping, Deal, Payment, PaymentSchedule, RenewalRequest, AuditLog, FileMetadata. Threat model: IDOR (deal IDs), XSS, CSRF, session hijacking, file upload bypass, brute force. Contrato de API con LendSaaS. Diagrama de arquitectura (frontend, API, LendSaaS, payment processor, S3, email). Decisión de identity provider vs. auth propia.",fase1,Low,0,0,4,16,0,0,20,26
+,,,,,,,,,,,,
+Fase 1 ADDITIONS,,,,56,8,4,16,0,0,84,117
+Fase 1 CUMULATIVE TOTAL,,,,56,24,4,48,0,0,132,182
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 2 — Build MVP  |  Portal completo con pagos reales + S3 + security hardening ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+2.1 Tech Stack Setup & Dev Environment,"Monorepo: /apps/web (Next.js) + /apps/api (NestJS). TypeScript strict. ESLint + Prettier. Scripts de arranque local. .env.example con todas las variables requeridas. README de setup. Mock data layer configurable vía env var (USE_MOCK_DATA=true).",fase2,Low,0,0,4,4,0,0,8,10
+2.2 Database Setup & ORM,"PostgreSQL + Prisma ORM. Schema inicial: PortalUser, MerchantMapping, RenewalRequest, FileMetadata, AuditLog, PaymentReference. Seed data para desarrollo. Migrations setup. Backups automáticos configurados desde el inicio.",fase2,Low,0,0,0,6,0,0,6,8
+2.3 Infrastructure & DevOps,"Ambientes cloud: dev + staging + prod. CI/CD: GitHub Actions (lint + test + build en PR, auto-deploy a staging en main, promote manual a prod). Docker para API. Managed DB con backups. SSL. WAF básico en infra layer. Secrets manager (AWS Secrets Manager / Doppler). Sentry + uptime monitoring. Separación de ambientes requerida por FFIEC.",fase2,Med,0,0,0,0,0,20,20,30
+2.4 Authentication — Backend,"JWT con httpOnly cookies + refresh tokens. Endpoints: POST /auth/login, POST /auth/logout, POST /auth/forgot-password, POST /auth/reset-password, POST /auth/invite/accept. Rate limiting: máx 5 intentos antes de lockout temporal. Account lockout con cooldown configurable. Session timeout. NIST SP 800-63B compliant. Middleware de auth en todas las rutas protegidas.",fase2,Med,0,0,0,16,0,0,16,24
+2.5 Authentication — Frontend,"Pantallas: Login (email + password + forgot password link), Forgot Password (email input + success state), Reset Password (nueva contraseña + confirm), Invite Accept (set password por primera vez desde invite link). Manejo de errores: credenciales inválidas, cuenta bloqueada, link expirado. Redirect post-login al dashboard. Accesible en mobile.",fase2,Med,0,0,14,0,6,0,20,30
+2.6 Merchant Invite & Onboarding Flow — Backend,"Generación de invite links con tokens de expiración (48 hrs). Endpoint: POST /admin/invite-merchant (Fundfi admin only). Token ligado a merchantId de LendSaaS. Re-invite si el token expiró. Revocación de tokens. Logging de invite events en AuditLog.",fase2,Med,0,0,0,8,4,0,12,18
+2.7 Merchant Invite & Onboarding — Frontend,"Pantalla de Invite Accept: ingresar email, crear password, confirmar. Validación de token: si expirado → mensaje claro + CTA 'Request a new invite link'. Branding Fundfi en pantalla de onboarding.",fase2,Med,0,0,8,0,4,0,12,18
+2.8 Multi-User per Merchant — Backend,"PortalUser → merchantId mapping (many-to-one). Múltiples contactos autorizados pueden acceder al mismo merchant account. Admin Fundfi puede agregar/remover usuarios por merchant. Enforcement: middleware que valida que el PortalUser.merchantId coincide con el resource solicitado — IDOR prevention a nivel de servicio.",fase2,Med,0,0,0,12,5,0,17,25
+2.9 Multi-User per Merchant — Frontend,"Admin Fundfi ve lista de usuarios por merchant (solo desde admin panel externo — el portal customer es read-only para esta feature en MVP). Merchant user no ve otros usuarios de su misma empresa. Manejo de unauthorized access: redirect a dashboard propio.",fase2,Low,0,0,8,0,0,0,8,10
+2.10 Merchant Dashboard — Backend,"Endpoint agregado GET /me/dashboard: company name, deal activo, total RTR, balance RTR, percent_paid calculado (total_RTR - balance_RTR) / total_RTR, payment frequency, payment amount, next payment date, expected final date, renewal eligibility flag (boolean), renewalSubmitted (boolean). Soporte para múltiples deals.",fase2,Med,0,0,0,12,0,0,12,18
+2.11 Merchant Dashboard — Frontend,"Landing post-login. Cards: RTR Progress bar (visual + numérico), deal info completo, payment info, next payment date. Renewal CTA: deshabilitado con mensaje informativo si < 40%; botón activo 'Renew Now' si >= 40%; badge 'Submitted' si ya enviado. Botón 'Make a Payment' siempre visible. Skeleton loading. Error state si LendSaaS no responde.",fase2,Med,0,0,20,0,6,0,26,39
+2.12 Paid-Off Progress Component,"Componente reutilizable: barra visual, porcentaje en texto (e.g. '62% paid off'), color dinámico por rango (rojo <20%, amber 20-39%, teal 40%+). Renewal gate reactivo. Muestra monto pagado vs. total en formato $X,XXX.XX. Reutilizado en Dashboard y Deal Detail.",fase2,Low,0,0,6,4,4,0,14,18
+2.13 Payment History — Backend,"GET /me/payments: lista paginada de pagos con fecha, monto, status (paid/pending/bounced/failed), método, referenceId, rejectionReason. Default: 20 rows, orden fecha desc. Datos desde LendSaaS. Manejo de status taxonomy de LendSaaS → status del portal.",fase2,Low,0,0,0,6,0,0,6,8
+2.14 Payment History — Frontend,"Tabla de historial. Columnas: fecha, monto, status badge, método, reference ID, motivo de rechazo. Filas bounced/failed: highlight rojo (background + badge). Paginación o load more. Empty state si no hay pagos. Rejection reason en italic rojo.",fase2,Low,0,0,10,0,4,0,14,18
+2.15 Payment Schedule — Backend,"GET /me/schedule: frecuencia (daily/weekly), monto por pago, próximas 5 fechas, fecha final esperada. Si LendSaaS expone este endpoint: leerlo directamente. Si no: calcular desde payment frequency + balance RTR + business day rules (weekends, bank holidays).",fase2,Low,0,0,0,6,0,0,6,8
+2.16 Payment Schedule — Frontend,"Sección de schedule. Etiqueta clara de frecuencia ('Weekly payments of $X'). Próximas 5 fechas en timeline visual. Fecha final esperada destacada. Read-only.",fase2,Low,0,0,8,0,4,0,12,16
+2.17 One-Time Payment — Backend,"POST /me/payments/one-time: valida monto (>0, no excede balance RTR), llama al adapter de payment gateway (epic 2.23), registra el intento en PaymentReference con status. Polling/webhook handler para actualizar status post-procesamiento. Retorna status (success/pending/failed) y referenceId. Logging de cada intento en AuditLog.",fase2,Med,0,0,0,16,4,0,20,30
+2.18 One-Time Payment — Frontend,"Flujo 3 pasos: (1) Input de monto + resumen de impacto en balance. (2) Confirmación con desglose. (3) Processing state → resultado: success (receipt + reference ID), pending (referencia + mensaje de espera), failed (mensaje claro + CTA de soporte). UI adapta al hosted payment page del processor si aplica.",fase2,Med,0,0,18,0,6,0,24,36
+2.19 Profile Page — Backend,"GET /me/profile: company name, dirección, authorized contacts (nombre + título + teléfono + email), info de negocio. Datos desde LendSaaS Merchant record. Read-only en MVP.",fase2,Low,0,0,0,6,0,0,6,8
+2.20 Profile Page — Frontend,"Pantalla de perfil: company info, dirección, tabla de authorized contacts. Read-only (labels + valores, sin inputs editables). Badge 'Read-only view'. Empty state si LendSaaS no retorna campo.",fase2,Low,0,0,8,0,4,0,12,16
+2.21 Renewal Request — Backend,"POST /me/renewal-request: valida que percent_paid >= 40% server-side (no confiar en client). Guarda RenewalRequest (merchantId, dealId, requestedAmount, status=pending, createdAt). Referencia los FileMetadata de los documentos subidos. Dispara email a Fundfi inbox (via epic 2.26). Registra submission en AuditLog.",fase2,Med,0,0,0,12,4,0,16,24
+2.22 Renewal Request — Frontend,"Flujo multi-paso: (1) Monto deseado (input + validación de mínimo/máximo si aplica). (2) Upload de 3 bank statements — drag & drop, validación de tipo (PDF/JPG/PNG) y tamaño. Upload real a S3 vía signed URL (epic 2.24). (3) Review: monto + 3 archivos listados. (4) Submit → success state: mensaje de confirmación + badge 'Renewal Submitted' en dashboard. Bloqueado si < 40%.",fase2,Med,0,0,20,0,8,0,28,42
+2.23 Support / Contact Page,"Página estática: email de soporte (mailto), teléfono con click-to-call, FAQ (6 items: balance RTR, pagos rechazados, cómo funciona el renewal, actualizar contacto, acceso de múltiples usuarios, soporte de portal).",fase2,Low,0,0,6,0,0,0,6,8
+2.24 LendSaaS Integration Layer,"NestJS service centralizando todas las llamadas a LendSaaS. Métodos: getCustomer, getDeal, getPayments, getPaymentSchedule, getBalances. Auth token management automático. Retry logic (3 intentos con exponential backoff). Fallback a mock data si LendSaaS no responde. Adapter pattern: swap de mock a real sin cambios en lógica de negocio.",fase2,Med,0,0,0,20,8,0,28,42
+2.25 Mock Data Layer,"JSON fixtures replicando todas las respuestas de LendSaaS. Configurable vía USE_MOCK_DATA=true. Escenarios: merchant <40%, merchant >=40%, payment bounced, múltiples deals, renewal submitted. Permite desarrollo completo sin depender de sandbox LendSaaS.",fase2,Low,0,0,0,4,4,0,8,10
+--- NUEVOS EPICS — Requeridos por Architect Scoping Brief ---,,,,,,,,,,,,
+2.26 Real Payment Gateway — Adapter & Webhook Integration,"IPaymentGateway interface implementado por el adapter del processor real (Stripe / Authorize.net / ACH provider — TBD Fase 0). Hosted payment page o tokenized embedded fields para reducir alcance PCI. Endpoints: initiate payment, status check, webhook receiver (verifica firma del processor). Reconciliación con LendSaaS post-confirmación. Manejo de estados: success, pending, failed, error. No almacenar datos de tarjeta/banco en el portal.",fase2,Med,0,0,0,24,10,0,34,51
+2.27 Document Storage — S3 + Malware Scan + Expiring Links,"Bucket S3 privado y encriptado para bank statements de renewal. Flujo: (1) FE solicita signed URL al API. (2) FE sube directamente a S3. (3) API valida tipo y tamaño del archivo. (4) Malware scan automático (ClamAV en Lambda o AWS GuardDuty). (5) Archivo aceptado → FileMetadata guardado en DB. Generación de expiring links (24-48 hrs) para acceso interno de Fundfi. Lifecycle retention rules. URLs nunca expuestas directamente al cliente.",fase2,Med,0,0,4,16,4,6,30,45
+2.28 Email Routing — Renewal Submissions to Fundfi Inbox,"Al completar una renewal request: enviar email automático a inbox de Fundfi (configurable por env var). Subject: '[Renewal Request] {CompanyName} — {Date}'. Body: resumen de la solicitud (monto, fecha, merchant) + expiring links a los 3 documentos. Logging del envío en AuditLog. Manejo de bounce/failure: retry + alert si falla 3 veces.",fase2,Med,0,0,0,8,4,0,12,18
+2.29 Audit Logging System,"Log de todos los eventos sensibles: login/logout/failed-login, password reset, invite accepted, deal view, profile view, payment attempt (monto + status), renewal submission, file upload/download-link-generated, unauthorized access attempt. Campos: actor (userId), action, timestamp, IP, userAgent, target entity, metadata. Tabla AuditLog en DB. Queryable por admin Fundfi. Retención configurable (default 12 meses).",fase2,Med,0,0,4,16,5,0,25,37
+2.30 Security Hardening — OWASP / WAF / IDOR / Dependency Scanning,"OWASP ASVS-aligned: input validation en todos los endpoints, output encoding, CSRF tokens, XSS protection headers (CSP/X-Frame/HSTS). IDOR enforcement: nunca confiar en IDs de la request — siempre validar contra PortalUser.merchantId en sesión activa. WAF configurado (rate limiting a nivel infra, geo-blocking opcional). npm audit en CI pipeline. SAST básico con CodeQL o similar.",fase2,Med,0,0,0,16,10,16,42,63
+2.31 Responsive Polish & Accessibility,"Audit pass final: iOS Safari + Android Chrome + Chrome/Firefox/Edge desktop. Mobile nav responsive. Tablas: scroll horizontal o card view en mobile. Touch targets >= 44px. Contraste WCAG AA. Forms de payment y file upload accesibles en mobile. Loading skeletons en todos los módulos de datos.",fase2,Low,0,0,16,0,8,0,24,31
+,,,,,,,,,,,,
+Fase 2 ADDITIONS,,,,0,0,158,212,112,42,524,762
+Fase 2 CUMULATIVE TOTAL,,,,56,24,162,260,112,42,656,944
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 3 — QA / UAT + Security Testing  |  Regresión completa + compliance verification + aceptación ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+3.1 QA — Regression Testing Full Suite,"Test plan completo. Casos por módulo: auth (login/lockout/reset/invite/multi-user), dashboard (carga de datos, states, renewal CTA), payment history (paginación, estados, rojo en bounced), schedule, one-time payment (success/pending/failed), renewal (gate 40%, upload, email routing, S3), profile, support. Edge cases: sesión expirada, LendSaaS timeout, balance RTR = 0, múltiples deals.",fase3,Med,0,0,0,0,20,0,20,30
+3.2 QA — Payment Integration Testing,"Tests específicos del payment gateway: pago exitoso, pago rechazado, pago pendiente, webhook de confirmación, timeout del processor, monto cero, monto mayor al balance, doble submit. Verificar que el portal no almacena datos de tarjeta/banco. Verificar reconciliación con LendSaaS.",fase3,Med,0,0,0,4,12,0,16,24
+3.3 QA — File Upload & Email Routing Testing,"Upload de archivos válidos (PDF/JPG/PNG). Upload de archivo malicioso (debe ser bloqueado). Upload mayor al límite de tamaño. Upload del tipo incorrecto. Verificar que el email llega a inbox de Fundfi con links correctos. Verificar expiración de links S3. Verificar que los archivos no son públicamente accesibles.",fase3,Med,0,0,0,4,8,0,12,18
+3.4 Security Testing & Compliance Verification,"IDOR: intentar acceder al deal de otro merchant por URL manipulation. XSS: inputs con payloads en todos los campos. CSRF: verificar tokens en forms de payment y renewal. Brute force: verificar lockout al 5to intento. Session: verificar timeout y que refresh tokens expiran. Audit log: verificar completitud de eventos. File upload bypass: intentar subir .exe, .php, .html disfrazados. PCI SAQ checklist.",fase3,Med,0,0,0,4,16,0,20,30
+3.5 Bug Fix Sprint — FE & BE,"Buffer dedicado a resolver bugs encontrados en QA + security testing. No incluye new features. Priorización: crítico (payment, IDOR, auth) > alto (data display, upload) > medio (UX polish).",fase3,Med,0,0,8,8,0,0,16,24
+3.6 UAT con Cliente Fundfi & Acceptance Sign-Off,"Preparar staging con 3 cuentas de prueba: merchant <40% (renovation bloqueada), merchant >=40% (renovación activa), merchant con pago rechazado en historial. Sesión UAT con equipo Fundfi. Recopilar feedback. Atender findings críticos. Sign-off document formal.",fase3,Low,0,12,0,0,8,0,20,26
+,,,,,,,,,,,,
+Fase 3 ADDITIONS,,,,0,12,8,20,64,0,104,152
+Fase 3 CUMULATIVE TOTAL,,,,56,36,170,280,176,42,760,1096
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- Fase 4 — Launch / Handoff  |  Producción + compliance docs + entrega ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+4.1 Production Environment Setup,"Configuración de prod: variables de entorno reales (LendSaaS prod, payment processor prod, email service). DNS + SSL. WAF activo. Secrets en vault (no en .env). S3 bucket prod con encryption at rest. Validación de conexión end-to-end en prod antes de go-live.",fase4,Low,0,0,0,4,0,8,12,16
+4.2 Go-Live Checklist & Monitoring,"Health check endpoints activos. DB backups verificados. Alertas Sentry configuradas. Uptime monitor activo. Audit log funcionando en prod. Light load test (10-20 usuarios). Email de renewal verificado llegando al inbox de Fundfi en prod. Ventana de hotfix de 1 semana.",fase4,Low,0,0,0,0,4,4,8,10
+4.3 Compliance Documentation — PCI / Security,"PCI SAQ completado (SAQ-A o SAQ-A-EP según processor). Documento de controles implementados vs. OWASP ASVS. Audit log retention policy document. Runbook de respuesta a incidentes de seguridad (qué hacer si hay acceso no autorizado). Matriz de riesgos residuales para revisión de Fundfi legal/compliance.",fase4,Low,0,8,0,4,4,0,16,21
+4.4 Technical Documentation,"Docs en el repositorio: README de arquitectura, Swagger/OpenAPI de todos los endpoints, guía de setup de ambientes, deployment runbook, guía de variables de entorno, runbook de troubleshooting. Guía de observabilidad: cómo leer logs, cómo interpretar alertas Sentry.",fase4,Low,0,0,4,4,0,0,8,10
+4.5 Client Handoff & Post-MVP Backlog,"Guía para equipo Fundfi: cómo onboardear nuevos merchants (invite flow), cómo revisar renewal submissions (email + S3 links), cómo interpretar audit logs, cómo configurar el portal para prod vs. staging. Backlog post-MVP priorizado: saved payment methods, profile editing, MFA, email notifications, admin panel. Entrega de repositorio y credenciales.",fase4,Low,0,12,0,4,0,0,16,21
+,,,,,,,,,,,,
+Fase 4 ADDITIONS,,,,0,20,4,16,8,12,60,78
+Fase 4 CUMULATIVE TOTAL,,,,56,56,174,296,184,54,820,1174
+,,,,,,,,,,,,
+,,,,,,,,,,,,
+--- RESUMEN GENERAL ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+,Solo esta fase (adiciones),,,,,,Total acumulado hasta esta fase,,,,
+Fase,Low,High,,Low acumulado,High acumulado,,Calendario estimado,Equipo principal
+Fase 0 — Discovery,48,65,,48,65,,1-2 semanas,PM + BE (bloqueante para pagos)
+Fase 1 — UX + Architecture,84,117,,132,182,,3 semanas (paralela con F0),Designer + FE + BE
+Fase 2 — Build MVP,524,762,,656,944,,10-12 semanas (con 2 BE),2 FE + 2 BE + QA + DevOps
+Fase 3 — QA / UAT / Security,104,152,,760,1096,,3-4 semanas,FE + BE + QA + PM
+Fase 4 — Launch / Handoff,60,78,,820,1174,,1-2 semanas,BE + DevOps + PM
+,,,,,,,,,,,,
+--- EQUIPO RECOMENDADO ---,,,,,,,,,,,,
+,,,,,,,,,,,,
+Rol,Horas totales,Fase más activa,Descripción
+PM,56 hrs,Fase 0 + Fase 3-4,Coordinación + client comms + UAT + compliance docs coordination. ~25% dedicación.
+UX/UI Designer,64 hrs,Fase 1,"Full-time Fase 1 (3 semanas). Incluye 11 pantallas con estados: vacío, error, cargando, bloqueado."
+Frontend Developer (×2),174 hrs,Fase 2-3,2 devs en paralelo. Peak Fase 2. React / Next.js 14+. Payment UI y file upload incluidos.
+Backend Developer (×2),296 hrs,Fase 0-3,"Ruta crítica — el rol más pesado. 2 BE obligatorio para cumplir agosto. Pagos + LendSaaS + S3 + security."
+QA Engineer,184 hrs,Fase 3,"Part-time Fase 2 (test plan desde semana 6). Full-time Fase 3 (regresión + security tests + payment tests + UAT)."
+DevOps Engineer,54 hrs,Fase 2 + Fase 4,WAF + S3 + secrets vault + CI/CD + prod deployment. Requiere experiencia en cloud y seguridad.
+,,,,,,,,,,,,
+Total personas únicas: 7 (6 si DevOps comparte con BE sénior),,,,,,,,,,,,
+Peak simultáneo: 7 personas en Fase 2,,,,,,,,,,,,
+Duración total estimada: 17-20 semanas | Fases 0+1 corren en paralelo,,,,,,,,,,,,
+"Para cumplir agosto: Fase 0 debe arrancar esta semana (mayo), 2 BE desde el inicio, cero scope creep en Fase 2",,,,,,,,,,,,
+,,,,,,,,,,,,
+Notas:,,,,,,,,,,,,
+Low Estimate = Design + PM + FE + BE + QA + Infra,,,,,,,,,,,,
+"High Estimate = multiplicador por riesgo: Low ×1.3 | Med ×1.5",,,,,,,,,,,,
+"PAGOS REALES incluidos en scope (epics 2.17, 2.18, 2.26) — no simulados",,,,,,,,,,,,
+"PCI DSS scope depende del processor: SAQ-A (hosted page) o SAQ-A-EP (embedded tokenized) — confirmar en Fase 0",,,,,,,,,,,,
+"Bank statements: upload real a S3 encriptado con malware scan (epic 2.27) — no simulado",,,,,,,,,,,,
+"Email routing de renewal submissions (epic 2.28) — automático a inbox Fundfi con expiring links",,,,,,,,,,,,
+"Audit logging (epic 2.29) activo desde inicio de Fase 2 — no un add-on post-build",,,,,,,,,,,,
+"Security hardening (epic 2.30) integrado en Fase 2 — no bolted-on en Fase 3",,,,,,,,,,,,
+"Si LendSaaS API tiene gaps: +40-80 hrs BE adicionales no incluidos",,,,,,,,,,,,
+"Si payment processor no soporta hosted/tokenized flow: +30-40 hrs de compliance adicionales (SAQ-D)",,,,,,,,,,,,
+"160 hrs/mes por desarrollador (40 hrs/sem × 4 sem)",,,,,,,,,,,,
+"Fase 1 design asume branding Fundfi ya definido — si no, agregar ~10-15 hrs de brand discovery",,,,,,,,,,,,
