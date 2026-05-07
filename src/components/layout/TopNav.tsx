@@ -2,16 +2,17 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useMerchant } from '@/contexts/MerchantContext';
 
-const pageTitles: Record<string, string> = {
-  '/dashboard': 'Dashboard',
-  '/deal': 'My Deal',
-  '/payments': 'Payments',
-  '/make-payment': 'Make a Payment',
-  '/renewal': 'Renewal',
-  '/profile': 'Profile',
-  '/support': 'Support',
+const pageTitleKeys: Record<string, string> = {
+  '/dashboard': 'dashboard',
+  '/deal': 'myDeal',
+  '/payments': 'payments',
+  '/make-payment': 'makePayment',
+  '/renewal': 'renewal',
+  '/profile': 'profile',
+  '/support': 'support',
 };
 
 interface TopNavProps {
@@ -29,7 +30,9 @@ function MenuIcon() {
 export default function TopNav({ onMenuClick }: TopNavProps) {
   const pathname = usePathname();
   const { selectedMerchant } = useMerchant();
-  const title = pageTitles[pathname] || 'Portal';
+  const t = useTranslations('Nav');
+  const titleKey = pageTitleKeys[pathname];
+  const title = titleKey ? t(titleKey as Parameters<typeof t>[0]) : 'Portal';
 
   return (
     <header className="h-16 bg-white border-b border-[#E5E7EB] flex items-center justify-between px-4 lg:px-6 sticky top-0 z-40">

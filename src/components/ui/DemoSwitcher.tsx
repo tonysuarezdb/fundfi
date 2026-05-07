@@ -1,15 +1,19 @@
 'use client';
 
 import React from 'react';
+import { useTranslations } from 'next-intl';
 import { merchants } from '@/data/mock';
 import { useMerchant } from '@/contexts/MerchantContext';
 
 export default function DemoSwitcher() {
   const { selectedMerchant, setSelectedMerchantId } = useMerchant();
+  const t = useTranslations('Common');
 
   return (
     <div className="px-4 py-3 border-t border-[#1e3f78]">
-      <p className="text-xs text-[#9CA3AF] mb-1.5 uppercase tracking-wide font-medium">Demo Scenario</p>
+      <p className="text-xs text-[#9CA3AF] mb-1.5 uppercase tracking-wide font-medium">
+        {t('demoScenario')}
+      </p>
       <select
         value={selectedMerchant.id}
         onChange={(e) => setSelectedMerchantId(e.target.value)}

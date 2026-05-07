@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
 export default function ForgotPasswordPage() {
   const t = useTranslations('ForgotPassword');
+  const tCommon = useTranslations('Common');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,17 +28,12 @@ export default function ForgotPasswordPage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="bg-white rounded-2xl px-5 py-3 inline-flex shadow-sm">
-            <Image
-              src="/fundfi-logo.webp"
-              alt="Fundfi"
-              width={140}
-              height={35}
-              className="h-9 w-auto"
-              priority
-            />
+          <div className="inline-flex">
+            <span className="text-3xl font-bold text-[#59b5e4]">Fundfi</span>
           </div>
-          <p className="text-[#9CA3AF] mt-3 text-xs tracking-widest uppercase">Customer Portal</p>
+          <p className="text-[#9CA3AF] mt-3 text-xs tracking-widest uppercase">
+            {tCommon('customerPortal')}
+          </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">

@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
@@ -157,6 +156,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const router = useRouter();
   const { selectedMerchant } = useMerchant();
   const t = useTranslations();
+  const tCommon = useTranslations('Common');
 
   const navItems: NavItem[] = [
     { label: t('Nav.dashboard'), href: '/dashboard', icon: <HomeIcon /> },
@@ -177,18 +177,11 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <div className="flex flex-col h-full bg-[#16325C] text-white">
       {/* Logo */}
       <div className="px-5 py-4 border-b border-[#1e3f78]">
-        <div className="bg-white rounded-xl px-3 py-2 inline-flex">
-          <Image
-            src="/fundfi-logo.webp"
-            alt="Fundfi"
-            width={120}
-            height={30}
-            className="h-7 w-auto"
-            priority
-          />
+        <div className="inline-flex">
+          <span className="text-xl font-bold text-[#59b5e4]">Fundfi</span>
         </div>
         <p className="text-[10px] text-[#6B7280] mt-2 tracking-widest uppercase font-medium">
-          Customer Portal
+          {tCommon('customerPortal')}
         </p>
       </div>
 
@@ -223,14 +216,14 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       {/* User Info & Sign Out */}
       <div className="px-4 py-4 border-t border-[#1e3f78]">
-        <p className="text-xs text-[#6B7280] mb-0.5">Signed in as</p>
+        <p className="text-xs text-[#6B7280] mb-0.5">{tCommon('signedInAs')}</p>
         <p className="text-sm text-white font-medium truncate">{selectedMerchant.companyName}</p>
         <button
           onClick={handleSignOut}
           className="mt-3 flex items-center gap-2 text-xs text-[#6B7280] hover:text-red-400 transition-colors duration-200"
         >
           <SignOutIcon />
-          Sign Out
+          {tCommon('signOut')}
         </button>
       </div>
     </div>
