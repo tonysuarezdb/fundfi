@@ -26,7 +26,14 @@ export default function ForgotPasswordPage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <Image src="/fundfi-logo.webp" alt="Fundfi" width={159} height={40} className="h-10 w-auto mx-auto" priority />
+          <Image
+            src="/fundfi-logo.webp"
+            alt="Fundfi"
+            width={159}
+            height={40}
+            className="h-10 w-auto mx-auto brightness-0 invert"
+            priority
+          />
           <p className="text-[#9CA3AF] mt-2 text-xs tracking-widest uppercase">Customer Portal</p>
         </div>
 
@@ -42,7 +49,10 @@ export default function ForgotPasswordPage() {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-[#16325C] mb-1.5">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-[#16325C] mb-1.5"
+                  >
                     Email address
                   </label>
                   <input
@@ -65,8 +75,19 @@ export default function ForgotPasswordPage() {
                   {loading ? (
                     <>
                       <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                        />
                       </svg>
                       Sending...
                     </>
@@ -79,8 +100,18 @@ export default function ForgotPasswordPage() {
           ) : (
             <div className="text-center py-4">
               <div className="w-14 h-14 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-7 h-7 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                <svg
+                  className="w-7 h-7 text-green-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
                 </svg>
               </div>
               <h2 className="text-xl font-semibold text-[#16325C] mb-2">Check your inbox</h2>
@@ -91,7 +122,10 @@ export default function ForgotPasswordPage() {
           )}
 
           <div className="mt-6 text-center">
-            <Link href="/" className="text-sm text-[#0057FF] hover:text-[#004AE0] transition-colors">
+            <Link
+              href="/"
+              className="text-sm text-[#0057FF] hover:text-[#004AE0] transition-colors"
+            >
               &larr; Back to sign in
             </Link>
           </div>

@@ -39,7 +39,14 @@ export default function LoginPage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <Image src="/fundfi-logo.webp" alt="Fundfi" width={159} height={40} className="h-10 w-auto mx-auto" priority />
+          <Image
+            src="/fundfi-logo.webp"
+            alt="Fundfi"
+            width={159}
+            height={40}
+            className="h-10 w-auto mx-auto brightness-0 invert"
+            priority
+          />
           <p className="text-[#9CA3AF] mt-2 text-xs tracking-widest uppercase">Customer Portal</p>
         </div>
 
@@ -98,8 +105,19 @@ export default function LoginPage() {
               {loading ? (
                 <>
                   <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    />
                   </svg>
                   Signing in...
                 </>
