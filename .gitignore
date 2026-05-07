@@ -29,3 +29,4 @@ Thumbs.db
 .vscode/settings.json
 .idea/
 *.swp
+tsconfig.tsbuildinfo
