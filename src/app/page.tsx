@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import { login } from '@/services/authService';
 
 export default function LoginPage() {
   const router = useRouter();
+  const t = useTranslations('Login');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,7 +19,7 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     if (!email || !password) {
-      setError('Please enter your email and password.');
+      setError(t('errorEmpty'));
       return;
     }
     setLoading(true);
@@ -25,7 +27,7 @@ export default function LoginPage() {
       await login({ email, password });
       router.push('/dashboard');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sign in failed. Please try again.');
+      setError(err instanceof Error ? err.message : t('errorGeneric'));
       setLoading(false);
     }
   };
@@ -51,13 +53,13 @@ export default function LoginPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <h2 className="text-xl font-semibold text-[#16325C] mb-1">Welcome back</h2>
-          <p className="text-sm text-[#6B7280] mb-6">Sign in to manage your account</p>
+          <h2 className="text-xl font-semibold text-[#16325C] mb-1">{t('title')}</h2>
+          <p className="text-sm text-[#6B7280] mb-6">{t('subtitle')}</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-[#16325C] mb-1.5">
-                Email address
+                {t('emailLabel')}
               </label>
               <input
                 id="email"
@@ -73,13 +75,13 @@ export default function LoginPage() {
             <div>
               <div className="flex justify-between items-center mb-1.5">
                 <label htmlFor="password" className="block text-sm font-medium text-[#16325C]">
-                  Password
+                  {t('passwordLabel')}
                 </label>
                 <Link
                   href="/forgot-password"
                   className="text-xs text-[#0057FF] hover:text-[#004AE0] transition-colors"
                 >
-                  Forgot password?
+                  {t('forgotPassword')}
                 </Link>
               </div>
               <input
@@ -119,10 +121,10 @@ export default function LoginPage() {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                     />
                   </svg>
-                  Signing in...
+                  {t('submitting')}
                 </>
               ) : (
-                'Sign In'
+                t('submit')
               )}
             </button>
           </form>
@@ -130,7 +132,7 @@ export default function LoginPage() {
 
         <div className="mt-4 text-center">
           <p className="text-xs text-[#6B7280] bg-[#1e3f78] rounded-xl px-4 py-3 inline-block">
-            Demo: Use any email and password to sign in
+            {t('demoHint')}
           </p>
         </div>
       </div>

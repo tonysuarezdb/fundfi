@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { useMerchant } from '@/contexts/MerchantContext';
 import DemoSwitcher from '@/components/ui/DemoSwitcher';
 
@@ -146,16 +147,6 @@ function SignOutIcon() {
   );
 }
 
-const navItems: NavItem[] = [
-  { label: 'Dashboard', href: '/dashboard', icon: <HomeIcon /> },
-  { label: 'My Deal', href: '/deal', icon: <DealIcon /> },
-  { label: 'Payments', href: '/payments', icon: <PaymentsIcon /> },
-  { label: 'Make Payment', href: '/make-payment', icon: <MakePaymentIcon /> },
-  { label: 'Renewal', href: '/renewal', icon: <RenewalIcon /> },
-  { label: 'Profile', href: '/profile', icon: <ProfileIcon /> },
-  { label: 'Support', href: '/support', icon: <SupportIcon /> },
-];
-
 interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
@@ -165,6 +156,17 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { selectedMerchant } = useMerchant();
+  const t = useTranslations();
+
+  const navItems: NavItem[] = [
+    { label: t('Nav.dashboard'), href: '/dashboard', icon: <HomeIcon /> },
+    { label: t('Nav.myDeal'), href: '/deal', icon: <DealIcon /> },
+    { label: t('Nav.payments'), href: '/payments', icon: <PaymentsIcon /> },
+    { label: t('Nav.makePayment'), href: '/make-payment', icon: <MakePaymentIcon /> },
+    { label: t('Nav.renewal'), href: '/renewal', icon: <RenewalIcon /> },
+    { label: t('Nav.profile'), href: '/profile', icon: <ProfileIcon /> },
+    { label: t('Nav.support'), href: '/support', icon: <SupportIcon /> },
+  ];
 
   const handleSignOut = () => {
     document.cookie = 'fundfi_auth=; path=/; max-age=0';

@@ -1,0 +1,152 @@
+{
+  "Common": {
+    "customerPortal": "Customer Portal",
+    "signedInAs": "Signed in as",
+    "signOut": "Sign Out",
+    "demoScenario": "Demo Scenario",
+    "viewAll": "View all",
+    "ach": "ACH",
+    "na": "N/A"
+  },
+  "Nav": {
+    "dashboard": "Dashboard",
+    "myDeal": "My Deal",
+    "payments": "Payments",
+    "makePayment": "Make Payment",
+    "renewal": "Renewal",
+    "profile": "Profile",
+    "support": "Support"
+  },
+  "PaymentStatus": {
+    "paid": "Paid",
+    "pending": "Pending",
+    "bounced": "Bounced",
+    "failed": "Failed"
+  },
+  "Login": {
+    "title": "Welcome back",
+    "subtitle": "Sign in to manage your account",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@company.com",
+    "passwordLabel": "Password",
+    "forgotPassword": "Forgot password?",
+    "submit": "Sign In",
+    "submitting": "Signing in...",
+    "demoHint": "Demo: Use any email and password to sign in",
+    "errorEmpty": "Please enter your email and password.",
+    "errorGeneric": "Sign in failed. Please try again."
+  },
+  "ForgotPassword": {
+    "title": "Reset your password",
+    "subtitle": "Enter your email address and we'll send you a reset link.",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@company.com",
+    "submit": "Send Reset Link",
+    "submitting": "Sending...",
+    "successTitle": "Check your inbox",
+    "successMessage": "A password reset link has been sent to {email}.",
+    "backToSignIn": "← Back to sign in"
+  },
+  "Dashboard": {
+    "totalRTR": "Total RTR",
+    "balanceRTR": "Balance RTR",
+    "percentPaid": "Percent Paid",
+    "nextPayment": "Next Payment",
+    "paidOff": "{percent}% Paid Off",
+    "paidLabel": "Paid: {amount}",
+    "totalLabel": "Total: {amount}",
+    "weeklyPayments": "Weekly payments",
+    "dailyPayments": "Daily payments",
+    "makePaymentTitle": "Make a Payment",
+    "makePaymentDesc": "Submit a one-time ACH payment toward your balance.",
+    "makePaymentBtn": "+ Make a Payment",
+    "nextScheduled": "Next scheduled",
+    "recentPayments": "Recent Payments",
+    "paidBadge": "{percent}% paid",
+    "renewalSubmitted": "Renewal request submitted",
+    "renewalSubmittedDesc": "Our team will review your request and contact you within 2-3 business days.",
+    "renewalEligible": "You're eligible for renewal!",
+    "renewalEligibleDesc": "You've paid {percent}% of your balance. Apply for a renewal now.",
+    "renewNow": "Renew Now →",
+    "renewalLocked": "Renewal not yet available",
+    "renewalLockedDesc": "Reach 40% to unlock renewal. You're currently at {percent}%."
+  },
+  "Payments": {
+    "title": "Payment History",
+    "totalCount": "{count} total payments",
+    "colDate": "Date",
+    "colAmount": "Amount",
+    "colStatus": "Status",
+    "colMethod": "Method",
+    "colReferenceId": "Reference ID",
+    "colRejectionReason": "Rejection Reason"
+  },
+  "MakePayment": {
+    "title": "Make a Payment",
+    "step1": "Amount",
+    "step2": "Confirm",
+    "step3": "Processing",
+    "amountLabel": "Payment amount",
+    "amountPlaceholder": "0.00",
+    "paymentMethod": "Payment Method",
+    "bankAccount": "Bank Account",
+    "confirmTitle": "Confirm Payment",
+    "confirmBtn": "Confirm & Pay",
+    "processingTitle": "Processing your payment...",
+    "successTitle": "Payment Complete",
+    "failedTitle": "Payment Failed",
+    "makeAnotherPayment": "Make another payment",
+    "backToDashboard": "Back to dashboard",
+    "tryAgain": "Try again"
+  },
+  "Renewal": {
+    "title": "Renewal Request",
+    "lockedTitle": "Renewal Not Available Yet",
+    "lockedDesc": "You need to pay at least 40% of your balance before you can apply for renewal. You're currently at {percent}%.",
+    "step1": "Amount",
+    "step2": "Documents",
+    "step3": "Review",
+    "desiredAmountLabel": "Desired renewal amount",
+    "uploadTitle": "Upload Bank Statements",
+    "uploadDesc": "Upload your last 3 months of bank statements.",
+    "submitBtn": "Submit Renewal Request",
+    "successTitle": "Renewal Submitted",
+    "submissionId": "Submission ID"
+  },
+  "Deal": {
+    "title": "My Deal",
+    "dealId": "Deal ID",
+    "startDate": "Start Date",
+    "expectedFinalDate": "Expected Final Date",
+    "paymentFrequency": "Payment Frequency",
+    "paymentAmount": "Payment Amount",
+    "status": "Status",
+    "upcomingPayments": "Upcoming Payments"
+  },
+  "Profile": {
+    "title": "Profile",
+    "companyName": "Company Name",
+    "address": "Address",
+    "phone": "Phone",
+    "email": "Email",
+    "authorizedContacts": "Authorized Contacts",
+    "bankAccount": "Bank Account",
+    "bankName": "Bank",
+    "accountType": "Account Type",
+    "accountEnding": "Account ending in",
+    "routingEnding": "Routing ending in"
+  },
+  "Support": {
+    "title": "Support",
+    "contactTitle": "Contact Us",
+    "faqTitle": "Frequently Asked Questions"
+  },
+  "Errors": {
+    "genericTitle": "Something went wrong",
+    "genericDesc": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try Again",
+    "notFoundTitle": "Page not found",
+    "notFoundDesc": "The page you're looking for doesn't exist.",
+    "backToDashboard": "Back to Dashboard"
+  }
+}

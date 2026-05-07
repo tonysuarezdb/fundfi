@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 export default function ForgotPasswordPage() {
+  const t = useTranslations('ForgotPassword');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,10 +43,8 @@ export default function ForgotPasswordPage() {
           {!submitted ? (
             <>
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-[#16325C] mb-1">Reset your password</h2>
-                <p className="text-sm text-[#6B7280]">
-                  Enter your email address and we&apos;ll send you a reset link.
-                </p>
+                <h2 className="text-xl font-semibold text-[#16325C] mb-1">{t('title')}</h2>
+                <p className="text-sm text-[#6B7280]">{t('subtitle')}</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-[#16325C] mb-1.5"
                   >
-                    Email address
+                    {t('emailLabel')}
                   </label>
                   <input
                     id="email"
@@ -89,10 +89,10 @@ export default function ForgotPasswordPage() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
                         />
                       </svg>
-                      Sending...
+                      {t('submitting')}
                     </>
                   ) : (
-                    'Send Reset Link'
+                    t('submit')
                   )}
                 </button>
               </form>
@@ -114,10 +114,8 @@ export default function ForgotPasswordPage() {
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-semibold text-[#16325C] mb-2">Check your inbox</h2>
-              <p className="text-sm text-[#6B7280]">
-                A password reset link has been sent to <strong>{email}</strong>.
-              </p>
+              <h2 className="text-xl font-semibold text-[#16325C] mb-2">{t('successTitle')}</h2>
+              <p className="text-sm text-[#6B7280]">{t('successMessage', { email })}</p>
             </div>
           )}
 
@@ -126,7 +124,7 @@ export default function ForgotPasswordPage() {
               href="/"
               className="text-sm text-[#0057FF] hover:text-[#004AE0] transition-colors"
             >
-              &larr; Back to sign in
+              {t('backToSignIn')}
             </Link>
           </div>
         </div>

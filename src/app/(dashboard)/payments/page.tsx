@@ -4,30 +4,29 @@ import React from 'react';
 import { useMerchant } from '@/contexts/MerchantContext';
 import Badge from '@/components/ui/Badge';
 import { formatCurrency, formatDate } from '@/lib/format';
-import { PaymentStatus } from '@/data/mock';
+import { useTranslations } from 'next-intl';
+import { PaymentStatus } from '@/types';
 
-function statusBadgeVariant(status: PaymentStatus): 'success' | 'warning' | 'error' | 'info' | 'neutral' {
+function statusBadgeVariant(
+  status: PaymentStatus
+): 'success' | 'warning' | 'error' | 'info' | 'neutral' {
   switch (status) {
-    case 'paid': return 'success';
-    case 'pending': return 'warning';
+    case 'paid':
+      return 'success';
+    case 'pending':
+      return 'warning';
     case 'bounced':
-    case 'failed': return 'error';
-    default: return 'neutral';
-  }
-}
-
-function statusLabel(status: PaymentStatus): string {
-  switch (status) {
-    case 'paid': return 'Paid';
-    case 'pending': return 'Pending';
-    case 'bounced': return 'Bounced';
-    case 'failed': return 'Failed';
-    default: return status;
+    case 'failed':
+      return 'error';
+    default:
+      return 'neutral';
   }
 }
 
 export default function PaymentsPage() {
   const { selectedMerchant } = useMerchant();
+  const t = useTranslations('Payments');
+  const tStatus = useTranslations('PaymentStatus');
   const { payments } = selectedMerchant;
   const sorted = [...payments].reverse();
 
@@ -35,8 +34,8 @@ export default function PaymentsPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-base font-semibold text-[#16325C]">Payment History</h2>
-          <p className="text-sm text-[#6B7280]">{payments.length} total payments</p>
+          <h2 className="text-base font-semibold text-[#16325C]">{t('title')}</h2>
+          <p className="text-sm text-[#6B7280]">{t('totalCount', { count: payments.length })}</p>
         </div>
       </div>
 
@@ -46,12 +45,24 @@ export default function PaymentsPage() {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-[#E5E7EB] bg-[#F5F7FA]">
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Date</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Amount</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Status</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Method</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Reference ID</th>
-                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">Rejection Reason</th>
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
+                  {t('colDate')}
+                </th>
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
+                  {t('colAmount')}
+                </th>
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
+                  {t('colStatus')}
+                </th>
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
+                  {t('colMethod')}
+                </th>
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
+                  {t('colReferenceId')}
+                </th>
+                <th className="text-left px-5 py-3.5 text-xs font-semibold text-[#6B7280] uppercase tracking-wide">
+                  {t('colRejectionReason')}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -65,12 +76,16 @@ export default function PaymentsPage() {
                     }`}
                   >
                     <td className="px-5 py-3.5 font-medium text-[#16325C]">{formatDate(p.date)}</td>
-                    <td className="px-5 py-3.5 font-semibold text-[#16325C]">{formatCurrency(p.amount)}</td>
+                    <td className="px-5 py-3.5 font-semibold text-[#16325C]">
+                      {formatCurrency(p.amount)}
+                    </td>
                     <td className="px-5 py-3.5">
-                      <Badge variant={statusBadgeVariant(p.status)}>{statusLabel(p.status)}</Badge>
+                      <Badge variant={statusBadgeVariant(p.status)}>{tStatus(p.status)}</Badge>
                     </td>
                     <td className="px-5 py-3.5 text-[#6B7280]">{p.method}</td>
-                    <td className="px-5 py-3.5 text-[#6B7280] font-mono text-xs">{p.referenceId}</td>
+                    <td className="px-5 py-3.5 text-[#6B7280] font-mono text-xs">
+                      {p.referenceId}
+                    </td>
                     <td className="px-5 py-3.5">
                       {p.rejectionReason ? (
                         <span className="text-red-600 italic text-xs">{p.rejectionReason}</span>
@@ -101,8 +116,10 @@ export default function PaymentsPage() {
                   <p className="text-xs text-[#6B7280] mt-0.5">{p.method}</p>
                 </div>
                 <div className="flex flex-col items-end gap-1.5">
-                  <span className="text-base font-bold text-[#16325C]">{formatCurrency(p.amount)}</span>
-                  <Badge variant={statusBadgeVariant(p.status)}>{statusLabel(p.status)}</Badge>
+                  <span className="text-base font-bold text-[#16325C]">
+                    {formatCurrency(p.amount)}
+                  </span>
+                  <Badge variant={statusBadgeVariant(p.status)}>{tStatus(p.status)}</Badge>
                 </div>
               </div>
               <div className="pt-3 border-t border-[#E5E7EB] flex items-center justify-between">
