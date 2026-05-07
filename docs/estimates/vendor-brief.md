@@ -5,6 +5,30 @@
 
 ---
 
+## Live Demo
+
+A working prototype is available to explore the full merchant experience before committing to any scope.
+
+|                    |                                                                                           |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| **URL**            | https://portal-mock-omega.vercel.app                                                      |
+| **Login**          | Any email and password — no real credentials needed                                       |
+| **Demo scenarios** | Use the **Demo Scenario** selector in the bottom-left sidebar to switch between merchants |
+
+### Demo scenarios available
+
+| Scenario                     | What it shows                                                    |
+| ---------------------------- | ---------------------------------------------------------------- |
+| Below 40% — Renewal Disabled | Renewal button visible but locked. Progress bar under threshold. |
+| Above 40% — Renewal Active   | Renewal button enabled. Merchant can submit a request.           |
+| 45% Paid — Bounced Payment   | Payment history includes a bounced entry highlighted in red.     |
+| 35% Paid — Pending Payment   | Multiple pending payments in history.                            |
+| 72% Paid — Renewal Submitted | Renewal already submitted. Confirmation state visible.           |
+
+> All data is mock — no real payments, no real documents, no real API calls. The demo is safe to share and explore freely.
+
+---
+
 ## What We Are Building
 
 A **secure, production-grade web portal** where Fundfi merchants can log in and fully manage their financing deal — without calling support.
