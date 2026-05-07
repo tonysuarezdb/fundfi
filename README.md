@@ -217,6 +217,7 @@ See [.github/workflows/ci.yml](.github/workflows/ci.yml).
 
 | File                                                                                       | Description                                                         |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| [docs/api.md](docs/api.md)                                                                 | API reference — all endpoints, request/response shapes, error codes |
 | [docs/estimates/vendor-brief.md](docs/estimates/vendor-brief.md)                           | Full project scope, team, epics, and hour estimates (vendor-facing) |
 | [docs/estimates/scope-estimate-simple.csv](docs/estimates/scope-estimate-simple.csv)       | Phase-level hour summary                                            |
 | [docs/estimates/scope-estimate-formatted.csv](docs/estimates/scope-estimate-formatted.csv) | Epic-by-epic detail with role breakdown                             |
