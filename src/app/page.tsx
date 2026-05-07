@@ -41,15 +41,17 @@ export default function LoginPage() {
 
       <div className="relative w-full max-w-md">
         <div className="text-center mb-8">
-          <Image
-            src="/fundfi-logo.webp"
-            alt="Fundfi"
-            width={159}
-            height={40}
-            className="h-10 w-auto mx-auto brightness-0 invert"
-            priority
-          />
-          <p className="text-[#9CA3AF] mt-2 text-xs tracking-widest uppercase">Customer Portal</p>
+          <div className="bg-white rounded-2xl px-5 py-3 inline-flex shadow-sm">
+            <Image
+              src="/fundfi-logo.webp"
+              alt="Fundfi"
+              width={140}
+              height={35}
+              className="h-9 w-auto"
+              priority
+            />
+          </div>
+          <p className="text-[#9CA3AF] mt-3 text-xs tracking-widest uppercase">Customer Portal</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8">

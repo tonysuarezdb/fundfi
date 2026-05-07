@@ -176,16 +176,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const sidebarContent = (
     <div className="flex flex-col h-full bg-[#16325C] text-white">
       {/* Logo */}
-      <div className="px-5 py-5 border-b border-[#1e3f78]">
-        <Image
-          src="/fundfi-logo.webp"
-          alt="Fundfi"
-          width={140}
-          height={35}
-          className="h-9 w-auto brightness-0 invert"
-          priority
-        />
-        <p className="text-[10px] text-[#6B7280] mt-1.5 tracking-widest uppercase font-medium">
+      <div className="px-5 py-4 border-b border-[#1e3f78]">
+        <div className="bg-white rounded-xl px-3 py-2 inline-flex">
+          <Image
+            src="/fundfi-logo.webp"
+            alt="Fundfi"
+            width={120}
+            height={30}
+            className="h-7 w-auto"
+            priority
+          />
+        </div>
+        <p className="text-[10px] text-[#6B7280] mt-2 tracking-widest uppercase font-medium">
           Customer Portal
         </p>
       </div>
