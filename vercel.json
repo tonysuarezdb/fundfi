@@ -1,7 +1,7 @@
 {
   "framework": "nextjs",
   "buildCommand": "npm run build",
-  "installCommand": "npm ci",
+  "installCommand": "HUSKY=0 npm ci",
   "regions": ["iad1"],
   "git": {
     "deploymentEnabled": {
