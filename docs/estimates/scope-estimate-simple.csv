@@ -63,37 +63,38 @@ Fase 4 CUMULATIVE TOTAL,,,,64,60,184,300,160,54,822,1173
 ,,,,,,,,,,,,
 --- RESUMEN POR FASE ---,,,,,,,,,,,,
 ,,,,,,,,,,,,
-Fase,Descripción,Low adiciones,High adiciones,Low acumulado,High acumulado,Calendario estimado,Cuello de botella
-Fase 0 — Discovery,LendSaaS API + payment processor + auth decisions,52,68,52,68,1-2 semanas,BE (32 hrs)
-Fase 1 — UX + Architecture,Diseño + arquitectura + threat model,92,129,144,197,3 semanas (paralela con F0),Designer (64 hrs)
-Fase 2 — Build MVP,Portal completo con pagos reales + security,538,781,682,978,10-12 semanas,BE (228 hrs) — ruta crítica
-Fase 3 — QA + Security + UAT,Regresión + security testing + acceptance,84,122,766,1100,3 semanas,QA (52 hrs)
-Fase 4 — Launch / Handoff,Producción + compliance docs + entrega,56,73,822,1173,1-2 semanas,PM + Infra
+Fase,Descripción,Low adiciones,High adiciones,Low acumulado,High acumulado,Semanas calendario,Cuello de botella
+Fase 0 — Discovery,LendSaaS API + payment processor + auth decisions,52,68,52,68,2 semanas,PM (2 sem) — BE termina en 0.6 sem
+Fase 1 — UX + Architecture,Diseño + arquitectura + threat model (paralela con F0),92,129,144,197,3 semanas,Designer (3.2 sem @ 20 h/sem)
+Fase 2 — Build MVP,Portal completo con pagos reales + security,538,781,682,978,5-6 semanas,QA (5 sem @ 20 h/sem) — BE 4.6 sem
+Fase 3 — QA + Security + UAT,Regresión + security testing + acceptance,84,122,766,1100,3 semanas,QA (2.6 sem @ 20 h/sem)
+Fase 4 — Launch / Handoff,Producción + compliance docs + entrega,56,73,822,1173,2 semanas,PM (2 sem @ 10 h/sem)
+TOTAL,,,,,,,,13-15 semanas (~3-4 meses),,
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
---- EQUIPO RECOMENDADO ---,,,,,,,,,,,,
+--- EQUIPO Y DEDICACIÓN ---,,,,,,,,,,,,
 ,,,,,,,,,,,,
-Rol,Horas totales,Fase más activa,Descripción
-PM,60 hrs,Fase 0 + Fase 3-4,Coordinación + client comms + UAT. ~25-35% dedicación. No full-time.
-UX/UI Designer,64 hrs,Fase 1,"Full-time Fase 1 (3 semanas), consulting puntual en Fase 2 para design QA."
-Frontend Developer (×2),184 hrs,Fase 2-3,2 devs en paralelo. Peak Fase 2. React / Next.js 14+.
-Backend Developer,300 hrs,Fase 0-3,"Ruta crítica. 2 BE aceleran Fase 2. Pagos + LendSaaS + security son BE-heavy. Node.js / NestJS."
-QA Engineer,160 hrs,Fase 3,"Part-time Fase 2 (test plan + smoke). Full-time Fase 3 (regresión + security testing + UAT)."
-DevOps Engineer,54 hrs,Fase 2 + Fase 4,WAF + S3 + secrets + CI/CD + prod deployment. Puede ser shared con BE sénior.
+Rol,Horas totales,Hrs/semana,Semanas activas,Fase más activa,Descripción
+PM,60 hrs,10 hrs/sem,6 semanas,Todas las fases,"Coordinación, client comms, UAT, compliance docs."
+UX/UI Designer,64 hrs,20 hrs/sem,3 semanas,Fase 1 únicamente,Contrato puntual. Sale al terminar Fase 1.
+Tech Lead,—,20 hrs/sem,Todo el proyecto,Fase 2 (build),"Arquitectura, code review, decisiones técnicas. ~10 h/sem en BE + ~5 h/sem en FE + 5 h/sem overhead."
+Frontend Developer,184 hrs,40 hrs/sem,5 semanas,Fase 2-3,React / Next.js 14+. 100% dedicado durante Fase 2.
+Backend Developer,300 hrs,40 hrs/sem,6 semanas,Fase 0-3 (ruta crítica),"NestJS + PostgreSQL. Pagos, LendSaaS, S3, auth, security. 50 h/sem efectivos con Lead."
+QA Engineer,160 hrs,20 hrs/sem,8 semanas,Fase 2 (test plan) → Fase 3 (full),"Fase 2: test planning + smoke (5 sem). Fase 3: regresión completa + security testing + UAT (3 sem)."
+DevOps Engineer,54 hrs,10 hrs/sem,5 semanas,Fase 2 + Fase 4,CI/CD + infra + prod deployment. Spread across project.
 ,,,,,,,,,,,,
-Total personas únicas: 6,,,,,,,,,,,,
-Peak simultáneo: 7 en Fase 2 (2 FE + 2 BE + QA + DevOps + PM),,,,,,,,,,,,
-Duración total: 17-21 semanas (~4-5 meses),,,,,,,,,,,,
-Timeline cliente (agosto): agresivo — requiere arrancar antes de junio y 2 BE en Fase 2,,,,,,,,,,,,
+Total personas: 7 (6 simultáneas — Designer solo Fase 1),,,,,,,,,,,,
+Peak simultáneo: 6 en Fase 2 (Lead + FE + BE + QA + DevOps + PM),,,,,,,,,,,,
+Duración total: 13-15 semanas (~3-4 meses),,,,,,,,,,,,
+"Timeline agosto: alcanzable si Fase 0 arranca en mayo — 13-15 sem desde inicio deja ~1-2 sem de buffer",,,,,,,,,,,,
 ,,,,,,,,,,,,
 Notas:,,,,,,,,,,,,
 Low Estimate = Design + PM + FE + BE + QA + Infra,,,,,,,,,,,,
 "High Estimate = multiplicador por riesgo: Low ×1.3 | Med ×1.5",,,,,,,,,,,,
+"BE efectivo = 40 h/sem (BE dev) + 10 h/sem (Tech Lead) = 50 h/sem → 300 hrs / 50 = 6 semanas",,,,,,,,,,,,
 "Pagos REALES incluidos en scope — no simulados. Payment processor TBD (ACH o card)",,,,,,,,,,,,
 "PCI DSS scope depende del processor y del approach (hosted page = SAQ-A, server-side = SAQ-D)",,,,,,,,,,,,
 "Bank statements: upload real a S3 encriptado con malware scan — no simulado",,,,,,,,,,,,
-"Si LendSaaS API tiene gaps: +40-80 hrs BE adicionales no incluidos",,,,,,,,,,,,
+"Si LendSaaS API tiene gaps: +40-80 hrs BE adicionales — extiende Fase 2 en 1-2 semanas",,,,,,,,,,,,
 "Si payment processor no soporta hosted flow: +30-40 hrs de PCI compliance adicionales",,,,,,,,,,,,
-"160 hrs/mes por desarrollador (40 hrs/sem × 4 sem)",,,,,,,,,,,,
-"Fases 0 + 1 corren en paralelo: calendar time ~3 semanas, no 5",,,,,,,,,,,,
-"Agosto = ~12 semanas desde hoy (mayo). Para cumplir: arrancar Fase 0 esta semana, 2 BE en Fase 2, sin scope creep",,,,,,,,,,,,
+"Fases 0 + 1 corren en paralelo: calendar time 3-4 semanas combinadas, no 5",,,,,,,,,,,,
