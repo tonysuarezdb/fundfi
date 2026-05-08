@@ -199,11 +199,11 @@ Design produces wireframes and an interactive prototype for all screens. BE lead
 
 ---
 
-### Fase 2 — Build MVP (Weeks 4–16)
+### Fase 2 — Build MVP (Weeks 4–10)
 
 **Goal:** A production-grade portal: real auth, real payments, real file storage, real security controls.
 
-This is the longest phase. Two BE devs and two FE devs work in parallel. QA runs smoke tests from week 8 onward.
+This is the longest phase. BE dev + Tech Lead + FE dev work in parallel. QA runs smoke tests and begins test planning from week 6 onward.
 
 **Build order (rough):**
 
@@ -221,7 +221,7 @@ This is the longest phase. Two BE devs and two FE devs work in parallel. QA runs
 
 ---
 
-### Fase 3 — QA + Security Testing + UAT (Weeks 16–19)
+### Fase 3 — QA + Security Testing + UAT (Weeks 10–13)
 
 **Goal:** Find and fix bugs. Verify security controls. Get client sign-off.
 
@@ -233,7 +233,7 @@ QA runs full regression across all flows including security test cases (IDOR att
 
 ---
 
-### Fase 4 — Launch / Handoff (Weeks 19–21)
+### Fase 4 — Launch / Handoff (Weeks 13–15)
 
 **Goal:** Go live with production-grade confidence. Hand over everything the team needs to operate independently.
 
@@ -263,23 +263,33 @@ Production environment fully configured. Compliance documentation generated. Tec
 
 ---
 
-### Frontend Developer × 2
+### Tech Lead
 
-- **Total hours:** ~184 hrs (combined ~368 hrs across both devs)
+- **Total hours:** Not tracked separately — captured in team overhead
+- **Commitment:** 20 hrs/week for the full project duration
+- **When most active:** All phases, with peak in Fase 2 (build)
+- **Responsibilities:** Architecture decisions, technical direction, code review across FE and BE, security design, threat model, API contracts. Directly contributes ~10 hrs/week to BE implementation and ~5 hrs/week of FE technical guidance. Remaining ~5 hrs/week covers planning, reviews, and cross-cutting concerns.
+- **Note:** The Tech Lead's BE contribution is what enables the 50 effective BE hrs/week needed to complete the build phase on schedule.
+
+---
+
+### Frontend Developer
+
+- **Total hours:** ~184 hrs
 - **When most active:** Fase 2 (peak) and Fase 3 (bug fixes)
-- **Responsibilities:** All portal screens in Next.js 14+. Auth flows, payment UI, renewal multi-step, file upload UX, responsive behavior, CSRF/XSS controls in frontend layer.
+- **Responsibilities:** All portal screens in Next.js 14+. Auth flows, payment UI, renewal multi-step, file upload UX, responsive behavior, CSRF/XSS controls in frontend layer. Also receives ~5 h/week of FE technical guidance from Tech Lead.
 - **Stack:** React, Next.js 14 (App Router), TypeScript, Tailwind CSS
 - **Dependency:** Needs Figma comps (Fase 1) before building screens (Fase 2)
 
 ---
 
-### Backend Developer (recommend 2)
+### Backend Developer + Tech Lead
 
-- **Total hours:** ~300 hrs — the heaviest role
+- **Total hours:** ~300 hrs (BE Developer) — the heaviest role
 - **When most active:** Fase 0 through Fase 3
-- **Responsibilities:** NestJS API, authentication + session management, LendSaaS integration, payment gateway integration, S3 file storage + malware scan, email routing service, audit logging, IDOR enforcement, OWASP security controls
+- **Responsibilities:** NestJS API, authentication + session management, LendSaaS integration, payment gateway integration, S3 file storage + malware scan, email routing service, audit logging, IDOR enforcement, OWASP security controls. The Tech Lead contributes ~10 hrs/week of direct BE work (architecture implementation, code review, complex integrations) alongside the BE Developer's 40 hrs/week, for 50 effective BE hours/week total.
 - **Stack:** Node.js, NestJS, PostgreSQL, Prisma ORM, AWS S3
-- **Critical path:** BE is the blocker for everything. With 1 BE developer, Fase 2 takes ~14-16 weeks alone. With 2 BE devs, compresses to 8-10 weeks. To hit August, 2 BE devs are required.
+- **Critical path:** BE is the blocker for everything. With 50 effective BE hrs/week (BE dev + Tech Lead), the 300 hrs of BE scope completes in ~6 weeks — fitting within the 13–15 week timeline.
 
 ---
 
@@ -303,15 +313,15 @@ Production environment fully configured. Compliance documentation generated. Tec
 
 ## Risks & Mitigation
 
-| Risk                                           | Likelihood | Impact | Mitigation                                                                                                                    |
-| ---------------------------------------------- | ---------- | ------ | ----------------------------------------------------------------------------------------------------------------------------- |
-| LendSaaS API doesn't expose all required data  | Medium     | High   | Mock data layer built from day 1. Fase 0 validates before Fase 2 starts. Budget +40-80 hrs BE if gaps found.                  |
-| LendSaaS sandbox not available                 | Medium     | Medium | All Fase 2 development runs against mock data. Real integration validated in Fase 3 against staging credentials.              |
-| Payment processor doesn't support hosted flow  | Medium     | High   | Forces SAQ-D compliance path — adds ~30-40 hrs and extends Fase 2. Resolve in Fase 0.                                         |
-| Payment processor not identified before Fase 2 | High       | High   | Blocks payment gateway epic entirely. Must be decided by end of Fase 0 week 2.                                                |
-| August timeline with current scope             | High       | High   | Requires: 2 BE devs, Fase 0 starting immediately, no scope additions in Fase 2. With 1 BE dev, realistic timeline is October. |
-| Branding assets not ready                      | Low        | Medium | Wireframes start without brand. Visual design (week 3 of Fase 1) needs brand assets.                                          |
-| Security review findings in Fase 3             | Medium     | High   | Start security hardening in Fase 2 week 1, not at the end. Don't bolt security on — build it in.                              |
+| Risk                                           | Likelihood | Impact | Mitigation                                                                                                       |
+| ---------------------------------------------- | ---------- | ------ | ---------------------------------------------------------------------------------------------------------------- |
+| LendSaaS API doesn't expose all required data  | Medium     | High   | Mock data layer built from day 1. Fase 0 validates before Fase 2 starts. Budget +40-80 hrs BE if gaps found.     |
+| LendSaaS sandbox not available                 | Medium     | Medium | All Fase 2 development runs against mock data. Real integration validated in Fase 3 against staging credentials. |
+| Payment processor doesn't support hosted flow  | Medium     | High   | Forces SAQ-D compliance path — adds ~30-40 hrs and extends Fase 2. Resolve in Fase 0.                            |
+| Payment processor not identified before Fase 2 | High       | High   | Blocks payment gateway epic entirely. Must be decided by end of Fase 0 week 2.                                   |
+| August timeline with current scope             | Medium     | High   | 13-15 week timeline makes August feasible if Fase 0 starts immediately and no scope is added in Fase 2.          |
+| Branding assets not ready                      | Low        | Medium | Wireframes start without brand. Visual design (week 3 of Fase 1) needs brand assets.                             |
+| Security review findings in Fase 3             | Medium     | High   | Start security hardening in Fase 2 week 1, not at the end. Don't bolt security on — build it in.                 |
 
 ---
 
@@ -336,15 +346,16 @@ These are confirmed future features, not scope for this estimate:
 | -------------- | ----------- | ---------- |
 | PM             | 60          | 7%         |
 | UX/UI Designer | 64          | 8%         |
-| Frontend (×2)  | 184         | 22%        |
+| Tech Lead      | —           | —          |
+| Frontend       | 184         | 22%        |
 | Backend        | 300         | 37%        |
 | QA             | 160         | 19%        |
 | DevOps         | 54          | 7%         |
 | **Total**      | **822 hrs** | **100%**   |
 
 **Low estimate:** ~822 hrs | **High estimate:** ~1,173 hrs
-**Timeline:** 17–21 weeks (~4–5 months)
-**To hit August (client goal):** 2 BE devs required + Fase 0 starting immediately + zero scope additions
+**Timeline:** 13–15 weeks (~3–4 months)
+**To hit August (client goal):** Fase 0 starting immediately + zero scope additions in Fase 2
 
 > Estimates follow the same risk multiplier used in the detail spreadsheets:
 > Low risk items × 1.3 · Medium risk items × 1.5

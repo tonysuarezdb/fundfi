@@ -53,7 +53,7 @@ An interactive frontend simulation is available to demonstrate the intended merc
 
 Estimated implementation timeline:
 
-- **17–21 weeks**
+- **13–15 weeks**
 - depending on:
   - LendSaaS API readiness,
   - payment processor capabilities,
@@ -220,30 +220,31 @@ The majority of engineering effort still exists in:
 
 | Scope                        | Estimated Time                |
 | ---------------------------- | ----------------------------- |
-| Discovery & architecture     | 2–4 weeks                     |
-| MVP implementation           | 8–12 weeks                    |
-| QA, security review & UAT    | 3–5 weeks                     |
-| Launch & stabilization       | 1–2 weeks                     |
-| **Total Estimated Timeline** | **17–21 weeks (~4–5 months)** |
+| Discovery & architecture     | 3–4 weeks                     |
+| MVP implementation           | 5–6 weeks                     |
+| QA, security review & UAT    | 3 weeks                       |
+| Launch & stabilization       | 2 weeks                       |
+| **Total Estimated Timeline** | **13–15 weeks (~3–4 months)** |
 
 ## Estimated Team Effort
 
 | Estimate Type | Hours     |
 | ------------- | --------- |
-| Low estimate  | 1,022 hrs |
-| High estimate | 1,478 hrs |
+| Low estimate  | 822 hrs   |
+| High estimate | 1,173 hrs |
 
 ### Hours by Role
 
-| Role                     | Hours (Low)   | Avg FTE            | Notes                                                         |
-| ------------------------ | ------------- | ------------------ | ------------------------------------------------------------- |
-| PM                       | 56 hrs        | 25%                | Coordination, client comms, UAT facilitation, compliance docs |
-| UX / UI Designer         | 64 hrs        | 50% (Phase 1 only) | Full-time Phase 1 — 11 screens with all states                |
-| Frontend Developer (× 2) | 208 hrs       | 100%               | React / Next.js 14+. Payment UI, file upload, renewal flow    |
-| Backend Developer (× 2)  | 464 hrs       | 100%               | Critical path — payments, LendSaaS, S3, auth, security        |
-| QA Engineer              | 184 hrs       | 50%                | Part-time Phase 2 (test planning) → full-time Phase 3         |
-| DevOps Engineer          | 54 hrs        | 25%                | CI/CD, WAF, S3, secrets vault, production deployment          |
-| **Total**                | **1,022 hrs** |                    |                                                               |
+| Role               | Hours (Low) | Avg FTE            | Notes                                                                      |
+| ------------------ | ----------- | ------------------ | -------------------------------------------------------------------------- |
+| PM                 | 60 hrs      | 25%                | Coordination, client comms, UAT facilitation, compliance docs              |
+| UX / UI Designer   | 64 hrs      | 50% (Phase 1 only) | Full-time Phase 1 — 11 screens with all states                             |
+| Tech Lead          | —           | 100%               | Architecture decisions, code review, ~10 h/week BE + ~5 h/week FE guidance |
+| Frontend Developer | 184 hrs     | 100%               | React / Next.js 14+. Payment UI, file upload, renewal flow                 |
+| Backend Developer  | 300 hrs     | 100%               | Critical path — payments, LendSaaS, S3, auth, security                     |
+| QA Engineer        | 160 hrs     | 50%                | Part-time Phase 2 (test planning) → full-time Phase 3                      |
+| DevOps Engineer    | 54 hrs      | 25%                | CI/CD, WAF, S3, secrets vault, production deployment                       |
+| **Total**          | **822 hrs** |                    |                                                                            |
 
 > **These estimates trend upward, not downward.**
 > Risk on this type of project is one-directional — scope gaps, integration unknowns, and compliance requirements tend to add hours, not reduce them.
@@ -251,18 +252,15 @@ The majority of engineering effort still exists in:
 
 ## Important Staffing Note
 
-The backend team is the critical path for delivery.
+The backend is the critical path for delivery.
 
-- With 1 backend engineer:
-  - estimated build phase = 14–16 weeks
-- With 2 backend engineers:
-  - estimated build phase = 8–10 weeks
+The Backend Developer (40 hrs/week) and the Tech Lead (contributing ~10 hrs/week directly to BE work) together provide **50 effective hours/week of backend capacity**. This is sufficient to complete the 300 hrs of backend scope in approximately 6 weeks, keeping the project on the 13–15 week timeline.
 
-An August launch target is considered aggressive and requires:
+An August launch target is achievable if:
 
-- immediate Phase 0 start,
-- finalized scope,
-- and 2 backend developers working in parallel.
+- Phase 0 starts immediately,
+- scope is finalized before Phase 2 begins,
+- and no additional scope is added during Phase 2.
 
 ## Why The Timeline Is Significant
 

@@ -100,15 +100,16 @@ Fase 4 — Launch / Handoff,60,78,,1022,1478,,1-2 semanas,BE + DevOps + PM
 Rol,Horas totales,Fase más activa,Descripción
 PM,56 hrs,Fase 0 + Fase 3-4,Coordinación + client comms + UAT + compliance docs coordination. ~25% dedicación.
 UX/UI Designer,64 hrs,Fase 1,"Full-time Fase 1 (3 semanas). Incluye 11 pantallas con estados: vacío, error, cargando, bloqueado."
-Frontend Developer (×2),208 hrs,Fase 2-3,2 devs en paralelo. Peak Fase 2. React / Next.js 14+. Payment UI y file upload incluidos.
-Backend Developer (×2),464 hrs,Fase 0-3,"Ruta crítica — el rol más pesado. 2 BE obligatorio para cumplir agosto. Pagos + LendSaaS + S3 + security."
+Tech Lead,—,Todo el proyecto,"Arquitectura, code review, decisiones técnicas. ~10 h/sem aporte a BE + ~5 h/sem a FE + 5 h/sem overhead."
+Frontend Developer,208 hrs,Fase 2-3,Peak Fase 2. React / Next.js 14+. Payment UI y file upload incluidos.
+Backend Developer,464 hrs,Fase 0-3,"Ruta crítica — el rol más pesado. BE dev (40 h/sem) + Tech Lead (~10 h/sem) = 50 h/sem efectivos. Pagos + LendSaaS + S3 + security."
 QA Engineer,184 hrs,Fase 3,"Part-time Fase 2 (test plan desde semana 6). Full-time Fase 3 (regresión + security tests + payment tests + UAT)."
 DevOps Engineer,54 hrs,Fase 2 + Fase 4,WAF + S3 + secrets vault + CI/CD + prod deployment. Requiere experiencia en cloud y seguridad.
 ,,,,,,,,,,,,
 Total personas únicas: 7 (6 si DevOps comparte con BE sénior),,,,,,,,,,,,
-Peak simultáneo: 7 personas en Fase 2,,,,,,,,,,,,
+Peak simultáneo: 5 en Fase 2 (Lead + FE + BE + QA + DevOps),,,,,,,,,,,,
 Duración total estimada: 17-20 semanas | Fases 0+1 corren en paralelo,,,,,,,,,,,,
-"Para cumplir agosto: Fase 0 debe arrancar esta semana (mayo), 2 BE desde el inicio, cero scope creep en Fase 2",,,,,,,,,,,,
+"Para cumplir agosto: Fase 0 debe arrancar esta semana (mayo), cero scope creep en Fase 2",,,,,,,,,,,,
 ,,,,,,,,,,,,
 Notas:,,,,,,,,,,,,
 Low Estimate = Design + PM + FE + BE + QA + Infra,,,,,,,,,,,,
