@@ -249,6 +249,28 @@ The majority of engineering effort still exists in:
 > Risk on this type of project is one-directional — scope gaps, integration unknowns, and compliance requirements tend to add hours, not reduce them.
 > The high estimate accounts for known risks (LendSaaS API coverage, payment processor complexity, PCI scope). If those risks materialize fully, actual effort could exceed the high estimate.
 
+### FTE Allocation by Phase
+
+Hours alone don't show staffing commitment. The table below shows approximate FTE (% of a full-time person) per role across each project phase.
+
+| Role                   | Phase 0–1 · Wks 1–5 | Phase 2 · Wks 5–16 | Phase 3 · Wks 16–20 | Phase 4 · Wks 20–21 |
+| ---------------------- | ------------------- | ------------------ | ------------------- | ------------------- |
+| PM                     | 50%                 | 25%                | 50%                 | 75%                 |
+| UX / UI Designer       | 50%                 | —                  | —                   | —                   |
+| Frontend Developer × 2 | —                   | 50% each           | 25% each            | —                   |
+| Backend Developer × 2  | 50% each            | 75% each           | 25% each            | 25% each            |
+| QA Engineer            | —                   | 25%                | 100%                | 25%                 |
+| DevOps Engineer        | —                   | 25%                | —                   | 75%                 |
+
+**Key ramp notes:**
+
+- **Designer** exits after Phase 1. No design work expected in build or QA phases.
+- **Backend** is the only role with sustained high utilization across the project. This is the critical path.
+- **Frontend** ramps up in Phase 2 and winds down after QA bug fixes in Phase 3.
+- **QA** starts part-time in Phase 2 (writing test plan) and goes full-time in Phase 3 (regression, security, UAT).
+- **DevOps** is mostly Phase 2 infra setup and Phase 4 production deployment. Low involvement otherwise.
+- **PM** is most active at the start (Phase 0 discovery) and end (Phase 4 handoff and compliance docs).
+
 ## Important Staffing Note
 
 The backend team is the critical path for delivery.
