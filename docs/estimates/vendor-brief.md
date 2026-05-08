@@ -230,35 +230,24 @@ The majority of engineering effort still exists in:
 
 | Estimate Type | Hours     |
 | ------------- | --------- |
-| Low estimate  | 828 hrs   |
-| High estimate | 1,174 hrs |
+| Low estimate  | 1,022 hrs |
+| High estimate | 1,478 hrs |
 
 ### Hours by Role
 
-| Role                     | Hours (Low) | Notes                                                              |
-| ------------------------ | ----------- | ------------------------------------------------------------------ |
-| PM                       | 56 hrs      | Coordination, client comms, UAT facilitation, compliance docs      |
-| UX / UI Designer         | 64 hrs      | Full-time Phase 1 — 11 screens with all states (error, empty, etc) |
-| Frontend Developer (× 2) | 174 hrs     | React / Next.js 14+. Payment UI, file upload, renewal flow         |
-| Backend Developer (× 2)  | 296 hrs     | Critical path — payments, LendSaaS, S3, auth, security             |
-| QA Engineer              | 184 hrs     | Part-time Phase 2, full-time Phase 3 (regression + security tests) |
-| DevOps Engineer          | 54 hrs      | CI/CD, WAF, S3, secrets vault, production deployment               |
-| **Total**                | **828 hrs** |                                                                    |
+| Role                     | Hours (Low)   | Avg FTE            | Notes                                                         |
+| ------------------------ | ------------- | ------------------ | ------------------------------------------------------------- |
+| PM                       | 56 hrs        | 25%                | Coordination, client comms, UAT facilitation, compliance docs |
+| UX / UI Designer         | 64 hrs        | 50% (Phase 1 only) | Full-time Phase 1 — 11 screens with all states                |
+| Frontend Developer (× 2) | 208 hrs       | 100%               | React / Next.js 14+. Payment UI, file upload, renewal flow    |
+| Backend Developer (× 2)  | 464 hrs       | 100%               | Critical path — payments, LendSaaS, S3, auth, security        |
+| QA Engineer              | 184 hrs       | 50%                | Part-time Phase 2 (test planning) → full-time Phase 3         |
+| DevOps Engineer          | 54 hrs        | 25%                | CI/CD, WAF, S3, secrets vault, production deployment          |
+| **Total**                | **1,022 hrs** |                    |                                                               |
 
 > **These estimates trend upward, not downward.**
 > Risk on this type of project is one-directional — scope gaps, integration unknowns, and compliance requirements tend to add hours, not reduce them.
 > The high estimate accounts for known risks (LendSaaS API coverage, payment processor complexity, PCI scope). If those risks materialize fully, actual effort could exceed the high estimate.
-
-### FTE Allocation (Average)
-
-| Role                   | Avg FTE | Duration                 | Notes                                                   |
-| ---------------------- | ------- | ------------------------ | ------------------------------------------------------- |
-| PM                     | 25%     | Full project             | Peaks at kickoff (Phase 0) and handoff (Phase 4)        |
-| UX / UI Designer       | 50%     | Phase 1 only (weeks 1–5) | Off after design is delivered                           |
-| Frontend Developer × 2 | 100%    | Weeks 5–20               | Full-time during build and QA phases                    |
-| Backend Developer × 2  | 100%    | Full project             | Full-time throughout — critical path                    |
-| QA Engineer            | 50%     | Weeks 8–21               | 25% during build (test planning) → 100% during QA phase |
-| DevOps Engineer        | 25%     | Weeks 5–21               | Peaks at Phase 4 production deployment                  |
 
 ## Important Staffing Note
 
